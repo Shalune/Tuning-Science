@@ -16,7 +16,7 @@ public class PlayerBehaviour : MonoBehaviour {
 
     private void Awake()
     {
-        jumpScript = GetComponent<Jump>();
+        jumpScript = GetComponent<JumpMono>().JumpScript;
         hasJump = !(jumpScript == null);
         velocity = Vector3.zero;
         acceleration = Vector3.zero;

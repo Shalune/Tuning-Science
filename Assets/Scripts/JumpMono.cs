@@ -7,9 +7,8 @@ public class JumpMono : MonoBehaviour {
 
     private void Awake()
     {
-        jumpScript = GetComponent<Jump>() as Jump;
         if (jumpScript == null)
-            jumpScript = new Jump(1f, 2f, 0.5f);
+            jumpScript = new Jump(1f, 2f, 0.5f, 0.25f);
     }
 
     public void Jump()
@@ -26,6 +25,12 @@ public class JumpMono : MonoBehaviour {
 
     public Jump JumpScript
     {
-        get { return jumpScript; }
+        get
+        {
+            if (jumpScript == null)
+                jumpScript = new Jump(1f, 2f, 0.5f, 0.25f);
+            return jumpScript;
+        }
+
     }
 }

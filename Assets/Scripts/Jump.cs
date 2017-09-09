@@ -15,14 +15,16 @@ public class Jump {
     private float gravity;
     private float jumpHeight;
     private float jumpTimeToMaxHeight;
+    private float timeFloating;
     private float gravityOnJump;
     private float jumpImpulse;
 
-    public Jump(float gravity, float jumpHeight, float jumpTimeToMaxHeight, float gravityOnJump = 0.3f, bool useFloat = true, _jumpState jumpState = _jumpState.GROUNDED)
+    public Jump(float gravity, float jumpHeight, float jumpTimeToMaxHeight, float timeFloating, float gravityOnJump = 0.3f, bool useFloat = true, _jumpState jumpState = _jumpState.FALLING)
     {
         this.gravity = gravity;
         this.jumpHeight = jumpHeight;
         this.jumpTimeToMaxHeight = jumpTimeToMaxHeight;
+        this.timeFloating = timeFloating;
         this.useFloat = useFloat;
         this.jumpState = jumpState;
         this.gravityOnJump = gravityOnJump;
@@ -50,6 +52,7 @@ public class Jump {
     public Vector3 Update(float timePassed)
     {
         Vector3 moveBy = Vector3.zero;
+
         switch (jumpState)
         {
             case _jumpState.RISING:
@@ -64,7 +67,21 @@ public class Jump {
             default:
                 break;
         }
+        UpdateJumpState(timePassed);
+
         return moveBy;
+    }
+
+    private void UpdateJumpState(float timePassed)
+    {
+        if (jumpState != _jumpState.GROUNDED)
+        {
+            timeSpentJumping += timePassed;
+            if (timeSpentJumping > jumpTimeToMaxHeight + timeFloating)
+                jumpState = _jumpState.FALLING;
+            else if (timeSpentJumping > jumpTimeToMaxHeight)
+                jumpState = _jumpState.FLOATING;
+        }
     }
 
     private Vector3 Rising(float timePassed)
@@ -96,6 +113,7 @@ public class Jump {
 
     public void GroundCharacter()
     {
+        timeSpentJumping = 0f;
         jumpState = _jumpState.GROUNDED;
     }
 
