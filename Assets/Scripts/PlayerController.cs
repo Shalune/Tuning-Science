@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
 
     private PlayerBehaviour behaviour;
 
-    public struct PlayerInput
+    public class PlayerInput
     {
         public Vector3 moveAxes;
         public bool jump;
@@ -18,12 +18,13 @@ public class PlayerController : MonoBehaviour {
     private void Awake()
     {
         behaviour = GetComponent<PlayerBehaviour>();
+        playerInput = new PlayerInput();
     }
 
     void Update () {
         ResetInput();
         GetInput();
-        behaviour.MovePlayer(playerInput);
+        behaviour.MovePlayer(playerInput, Time.deltaTime);
 	}
 
     private void ResetInput()

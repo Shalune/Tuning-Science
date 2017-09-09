@@ -39,19 +39,19 @@ public class Jump {
         canJump = false;
     }
 
-    public Vector3 Update()
+    public Vector3 Update(float timePassed)
     {
         Vector3 moveBy = Vector3.zero;
         switch (jumpState)
         {
             case _jumpState.RISING:
-                moveBy = Rising();
+                moveBy = Rising(timePassed);
                 break;
             case _jumpState.FLOATING:
-                moveBy = Floating();
+                moveBy = Floating(timePassed);
                 break;
             case _jumpState.FALLING:
-                moveBy = Falling();
+                moveBy = Falling(timePassed);
                 break;
             default:
                 break;
@@ -59,19 +59,19 @@ public class Jump {
         return moveBy;
     }
 
-    private Vector3 Rising()
+    private Vector3 Rising(float timePassed)
     {
         return Vector3.zero;
     }
 
-    private Vector3 Floating()
+    private Vector3 Floating(float timePassed)
     {
         return Vector3.zero;
     }
 
-    private Vector3 Falling()
+    private Vector3 Falling(float timePassed)
     {
-        return Vector3.zero;
+        return Vector3.down * gravity * timePassed;
     }
 
     #region Variable Access
@@ -83,6 +83,10 @@ public class Jump {
     public _jumpState JumpState
     {
         get { return jumpState; }
+    }
+    public bool CurrentlyJumping
+    {
+        get { return jumpState != _jumpState.GROUNDED; }
     }
 
     public float Gravity

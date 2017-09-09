@@ -19,8 +19,13 @@ public class JumpMono : MonoBehaviour {
 
     private void Update()
     {
-        Vector3 moveBy = jumpScript.Update();
+        //Vector3 moveBy = jumpScript.Update();
         // move player by amount
         //likely move to non-Update call to be called by player's or game manager's update
+    }
+
+    public Jump JumpScript
+    {
+        get { return jumpScript; }
     }
 }
