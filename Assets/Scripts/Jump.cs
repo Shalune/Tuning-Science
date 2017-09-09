@@ -8,19 +8,24 @@ public class Jump {
     private bool useFloat;
     public enum _jumpState { GROUNDED, RISING, FLOATING, FALLING, NUMELEMENTS };
     private _jumpState jumpState = _jumpState.GROUNDED;
+    private bool impulseApplied = true;
 
     // future - load values below from file or game manager
     private float gravity;
     private float jumpHeight;
     private float jumpTimeToMaxHeight;
+    private float gravityOnJump;
+    private float jumpImpulse;
 
-    public Jump(float gravity, float jumpHeight, float jumpTimeToMaxHeight, bool useFloat = true, _jumpState jumpState = _jumpState.GROUNDED)
+    public Jump(float gravity, float jumpHeight, float jumpTimeToMaxHeight, float gravityOnJump = 0.3f, bool useFloat = true, _jumpState jumpState = _jumpState.GROUNDED)
     {
         this.gravity = gravity;
         this.jumpHeight = jumpHeight;
         this.jumpTimeToMaxHeight = jumpTimeToMaxHeight;
         this.useFloat = useFloat;
         this.jumpState = jumpState;
+        this.gravityOnJump = gravityOnJump;
+        this.jumpImpulse = CalculateJumpImpulse();
     }
 
     public bool TryJump()
@@ -37,6 +42,7 @@ public class Jump {
     {
         jumpState = _jumpState.RISING;
         canJump = false;
+        impulseApplied = false;
     }
 
     public Vector3 Update(float timePassed)
@@ -61,7 +67,14 @@ public class Jump {
 
     private Vector3 Rising(float timePassed)
     {
-        return Vector3.zero;
+        Vector3 result = Vector3.zero;
+        if (!impulseApplied)
+        {
+            result.y += jumpImpulse;
+            impulseApplied = true;
+        }
+        result.y -= gravity * gravityOnJump * timePassed;
+        return result;
     }
 
     private Vector3 Floating(float timePassed)
@@ -74,7 +87,12 @@ public class Jump {
         return Vector3.down * gravity * timePassed;
     }
 
-    #region Variable Access
+    private float CalculateJumpImpulse()
+    {
+        return (jumpHeight / jumpTimeToMaxHeight) + (gravity * jumpTimeToMaxHeight * gravityOnJump);
+    }
+
+    #region Public Variable Access
     public bool CanJump
     {
         get { return canJump; }
