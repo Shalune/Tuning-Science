@@ -5,6 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerController))]
 public class PlayerBehaviour : MonoBehaviour {
 
+    // move to game manager on full implementation
+    public Transform ground;
+
     bool hasJump = false;
     Jump jumpScript;
     Vector3 velocity;
@@ -52,6 +55,17 @@ public class PlayerBehaviour : MonoBehaviour {
     {
         Vector3 moveTo = transform.position;
         moveTo += velocity;
+        moveTo = CorrectForCollision(moveTo);
         transform.position = moveTo;
+    }
+
+    private Vector3 CorrectForCollision(Vector3 moveTo)
+    {
+        if((transform.position + moveTo - (transform.lossyScale/2f)).y < ground.position.y + (ground.lossyScale.y / 2f))
+        {
+            moveTo.y = ground.position.y + (ground.lossyScale.y / 2f) + (transform.lossyScale.y / 2f);
+            jumpScript.GroundCharacter();
+        }
+        return moveTo;
     }
 }

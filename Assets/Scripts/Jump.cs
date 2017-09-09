@@ -9,6 +9,7 @@ public class Jump {
     public enum _jumpState { GROUNDED, RISING, FLOATING, FALLING, NUMELEMENTS };
     private _jumpState jumpState = _jumpState.GROUNDED;
     private bool impulseApplied = true;
+    private float timeSpentJumping;
 
     // future - load values below from file or game manager
     private float gravity;
@@ -26,6 +27,7 @@ public class Jump {
         this.jumpState = jumpState;
         this.gravityOnJump = gravityOnJump;
         this.jumpImpulse = CalculateJumpImpulse();
+        this.timeSpentJumping = 0f;
     }
 
     public bool TryJump()
@@ -79,7 +81,7 @@ public class Jump {
 
     private Vector3 Floating(float timePassed)
     {
-        return Vector3.zero;
+        return Vector3.down * gravity * gravityOnJump * timePassed;
     }
 
     private Vector3 Falling(float timePassed)
@@ -90,6 +92,11 @@ public class Jump {
     private float CalculateJumpImpulse()
     {
         return (jumpHeight / jumpTimeToMaxHeight) + (gravity * jumpTimeToMaxHeight * gravityOnJump);
+    }
+
+    public void GroundCharacter()
+    {
+        jumpState = _jumpState.GROUNDED;
     }
 
     #region Public Variable Access
