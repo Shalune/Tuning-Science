@@ -29,6 +29,7 @@ public class Jump {
         this.jumpState = jumpState;
         this.gravityOnJump = gravityOnJump;
         this.jumpImpulse = CalculateJumpImpulse();
+        Debug.Log("impulse = " + jumpImpulse);
         this.timeSpentJumping = 0f;
     }
 
@@ -112,6 +113,9 @@ public class Jump {
 
     private float CalculateJumpImpulse()
     {
+        Debug.Log("height = " + jumpHeight + "   time = " + jumpTimeToMaxHeight);
+        Debug.Log("first half " + (jumpHeight / jumpTimeToMaxHeight));
+        Debug.Log("second half " + (gravity * jumpTimeToMaxHeight * gravityOnJump));
         return (jumpHeight / jumpTimeToMaxHeight) + (gravity * jumpTimeToMaxHeight * gravityOnJump); 
     }
 

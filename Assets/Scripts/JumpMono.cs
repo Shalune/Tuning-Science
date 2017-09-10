@@ -5,12 +5,6 @@ using UnityEngine;
 public class JumpMono : MonoBehaviour {
     private Jump jumpScript = null;
 
-    private void Awake()
-    {
-        if (jumpScript == null)
-            jumpScript = new Jump(1f, 2f, 0.5f, 0.25f);
-    }
-
     public void Jump()
     {
         jumpScript.TryJump();
@@ -28,7 +22,7 @@ public class JumpMono : MonoBehaviour {
         get
         {
             if (jumpScript == null)
-                jumpScript = new Jump(1f, 2f, 0.5f, 0.25f);
+                jumpScript = new Jump(1f, 0.025f, 0.15f, 0.5f, 0.5f);
             return jumpScript;
         }
 

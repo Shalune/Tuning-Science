@@ -51,10 +51,10 @@ public class PlayerBehaviour : MonoBehaviour {
     private void UpdateVelocity(float timePassed)
     {
         //Debug.Log(timePassed);
-        velocity += acceleration * timePassed;
+        velocity += acceleration;
         if (velocity.magnitude > maxVelocity)
             velocity = velocity.normalized * maxVelocity;
-       // if(velocity != Vector3.zero)
+        // if(velocity != Vector3.zero)
         //    Debug.Log(acceleration.y + "   " + velocity.y);
     }
 
