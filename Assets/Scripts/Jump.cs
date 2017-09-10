@@ -34,9 +34,10 @@ public class Jump {
 
     public bool TryJump()
     {
-        if(canJump)
+        if(canJump && jumpState == _jumpState.GROUNDED)
         {
             StartJump();
+            Debug.Log("new jump");
             return true;
         }
         return false;
@@ -45,7 +46,6 @@ public class Jump {
     private void StartJump()
     {
         jumpState = _jumpState.RISING;
-        canJump = false;
         impulseApplied = false;
     }
 
@@ -77,9 +77,12 @@ public class Jump {
         if (jumpState != _jumpState.GROUNDED)
         {
             timeSpentJumping += timePassed;
-            if (timeSpentJumping > jumpTimeToMaxHeight + timeFloating)
+            if (jumpState == _jumpState.FLOATING && 
+                timeSpentJumping > jumpTimeToMaxHeight + timeFloating)
                 jumpState = _jumpState.FALLING;
-            else if (timeSpentJumping > jumpTimeToMaxHeight)
+
+            else if (jumpState == _jumpState.RISING && 
+                timeSpentJumping > jumpTimeToMaxHeight)
                 jumpState = _jumpState.FLOATING;
         }
     }
@@ -92,7 +95,8 @@ public class Jump {
             result.y += jumpImpulse;
             impulseApplied = true;
         }
-        result.y -= gravity * gravityOnJump * timePassed;
+        else
+            result.y -= gravity * gravityOnJump * timePassed;
         return result;
     }
 
@@ -108,7 +112,7 @@ public class Jump {
 
     private float CalculateJumpImpulse()
     {
-        return (jumpHeight / jumpTimeToMaxHeight) + (gravity * jumpTimeToMaxHeight * gravityOnJump);
+        return (jumpHeight / jumpTimeToMaxHeight) + (gravity * jumpTimeToMaxHeight * gravityOnJump); 
     }
 
     public void GroundCharacter()
