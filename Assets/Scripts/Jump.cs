@@ -17,9 +17,12 @@ public class Jump {
     private float jumpTimeToMaxHeight;
     private float timeFloating;
     private float gravityOnJump;
+    private float gravityOnFloat;
     private float jumpImpulse;
 
-    public Jump(float gravity, float jumpHeight, float jumpTimeToMaxHeight, float timeFloating, float gravityOnJump = 0.3f, bool useFloat = true, _jumpState jumpState = _jumpState.FALLING)
+    public Jump(float gravity, float jumpHeight, float jumpTimeToMaxHeight, 
+        float timeFloating, float gravityOnJump, float gravityOnFloat, bool useFloat = true, 
+        _jumpState jumpState = _jumpState.FALLING)
     {
         this.gravity = gravity;
         this.jumpHeight = jumpHeight;
@@ -28,6 +31,7 @@ public class Jump {
         this.useFloat = useFloat;
         this.jumpState = jumpState;
         this.gravityOnJump = gravityOnJump;
+        this.gravityOnFloat = gravityOnFloat;
         this.jumpImpulse = CalculateJumpImpulse();
         Debug.Log("impulse = " + jumpImpulse);
         this.timeSpentJumping = 0f;
@@ -103,7 +107,7 @@ public class Jump {
 
     private Vector3 Floating(float timePassed)
     {
-        return Vector3.down * gravity * gravityOnJump * timePassed;
+        return Vector3.down * gravity * gravityOnFloat * timePassed;
     }
 
     private Vector3 Falling(float timePassed)

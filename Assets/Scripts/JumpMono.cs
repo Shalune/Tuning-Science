@@ -22,7 +22,7 @@ public class JumpMono : MonoBehaviour {
         get
         {
             if (jumpScript == null)
-                jumpScript = new Jump(1f, 0.025f, 0.15f, 0.5f, 0.5f);
+                jumpScript = new Jump(1f, 0.02f, 0.15f, 0.5f, 0.5f, 0.15f);
             return jumpScript;
         }
 
